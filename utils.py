@@ -8,7 +8,7 @@ class BucketAdapter:
     bucket = None
 
     # Constructor
-    def __init__(self, project_id: str, bucket_name: str, credentials: str):
+    def __init__(self, bucket_name: str, credentials: str):
 
         credentials = json.loads(credentials)
 
@@ -32,6 +32,8 @@ class BucketAdapter:
             credentials = ServiceAccountCredentials.from_json_keyfile_dict(
                 credentials
             )
+
+            project_id = credentials["project_id"]
 
             client = storage.Client(credentials=credentials, project=project_id)
             bucket = client.get_bucket(bucket_name)

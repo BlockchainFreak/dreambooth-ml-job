@@ -8,12 +8,11 @@ import requests
 job_id = os.environ.get("JOB_ID")
 num_images = os.environ.get("NUM_IMAGES")
 credentials = os.environ.get("CREDENTIALS")
-project_id = os.environ.get("PROJECT_ID")
 bucket_name = os.environ.get("BUCKET_NAME")
 
 model_path = "weights/zwx"             # If you want to use previously trained model saved in gdrive, replace this with the full path of model in gdrive
 
-bucket = BucketAdapter(project_id, bucket_name, credentials)
+bucket = BucketAdapter(bucket_name, credentials)
 
 for i in range(1, num_images + 1):
     bucket.download_file(f"{job_id}/inputs/{i}", f"images/zwx/zwx_{i}.jpg")

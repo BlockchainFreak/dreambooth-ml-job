@@ -1,6 +1,6 @@
 #!/bin/bash
 
-required_env_vars=("JOB_ID" "NUM_IMAGES" "CREDENTIALS" "PROJECT_ID" "BUCKET_NAME")
+required_env_vars=("JOB_ID" "NUM_IMAGES" "CREDENTIALS" "BUCKET_NAME")
 
 for var in "${required_env_vars[@]}"; do
   if [ -z "${!var}" ]; then
@@ -37,4 +37,4 @@ python3 train_dreambooth.py \
 
 python3 convert_diffusers_to_original_stable_diffusion.py --model_path "weights/zwx"  --checkpoint_path "weights/zwx/model.ckpt" --half
 
-python3 infer.py
+python3 train.py
