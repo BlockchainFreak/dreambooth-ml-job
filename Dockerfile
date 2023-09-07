@@ -7,7 +7,7 @@ ADD https://github.com/ShivamShrirao/diffusers/raw/main/examples/dreambooth/trai
 ADD https://github.com/ShivamShrirao/diffusers/raw/main/scripts/convert_diffusers_to_original_stable_diffusion.py convert_diffusers_to_original_stable_diffusion.py
 
 RUN mkdir -p /sd-models
-ADD https://huggingface.co/runwayml/stable-diffusion-v1-5/resolve/main/v1-5-pruned.safetensors /sd-models/v1-5-pruned.safetensors
+ADD /home/umer_naeem/model/v1-5-pruned.safetensors /sd-models/v1-5-pruned.safetensors
 
 RUN pip install -qq git+https://github.com/ShivamShrirao/diffusers \
     && pip install -q -U --pre triton \
@@ -17,4 +17,4 @@ RUN pip install -qq git+https://github.com/ShivamShrirao/diffusers \
 COPY . .
 
 # Sets up the entry point to invoke the trainer.
-ENTRYPOINT ["bash", "start.sh"]
+CMD ["bash", "start.sh"]
