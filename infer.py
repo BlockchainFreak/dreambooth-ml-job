@@ -3,19 +3,12 @@ import os
 from torch import autocast
 from diffusers import StableDiffusionPipeline, DDIMScheduler
 from utils import BucketAdapter
-import requests
 
 job_id = os.environ.get("JOB_ID")
-num_images = os.environ.get("NUM_IMAGES")
 credentials = os.environ.get("CREDENTIALS")
 bucket_name = os.environ.get("BUCKET_NAME")
 
 model_path = "weights/zwx"             # If you want to use previously trained model saved in gdrive, replace this with the full path of model in gdrive
-
-bucket = BucketAdapter(bucket_name, credentials)
-
-for i in range(1, num_images + 1):
-    bucket.download_file(f"{job_id}/inputs/{i}", f"images/zwx/zwx_{i}.jpg")
 
 pipe = StableDiffusionPipeline.from_pretrained(model_path, safety_checker=None, torch_dtype=torch.float16).to("cuda")
 pipe.scheduler = DDIMScheduler.from_config(pipe.scheduler.config)
@@ -77,6 +70,7 @@ with autocast("cuda"), torch.inference_mode():
 
     generations.append(images)
 
+bucket = BucketAdapter(bucket_name, credentials)
 for i, img in enumerate(images):
     img.save(f"output{i}.jpg")    
-    bucket.upload_file(f"output{i}.jpg", f"{job_id}/outputs/{i}")
+    bucket.upload_file(f"output{i}.jpg", f"{job_id}/outputs/{i}.jpg")
